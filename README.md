@@ -1,4 +1,4 @@
-# minishell
+# Philosophers
 42 project philosophers to learn about the threads and the mutex.
 
 --------
