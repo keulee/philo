@@ -1,0 +1,26 @@
+> usleep
+
+usleep 함수를 사용하면 일정 시간 동안 코드의 실행을 늦출 수 있습니다.
+     #include <unistd.h>
+     int usleep(useconds_t microseconds);
+usleep 은 마이크로초: 1초 == 1000000마이크로초
+
+
+> gettimeofday
+
+특정구간의 수행시간 차이를 계산하기 위해 마이크로 단위의 시간 함수 gettimeofday 를 지원합니다.
+     #include <sys/time.h>
+     int gettimeofday(struct timeval *tv, struct timezone *tz);
+tv
+- 1970-01-01 00:00:00 +0000 (UTC) 이후 경과된 초(seconds)와 micro초를 저장할 buffer
+-   struct timeval { 
+        time_t tv_sec; /* seconds */ 
+        suseconds_t tv_usec; /* microseconds */ 
+    };
+tz
+- timezone 정보로 값은 무시되며, NULL을 사용함.
+- struct timezone {
+     int tz_minuteswest; /* minutes west of Greenwich */
+     int tz_dsttime; /* type of DST correction */ 
+     };
+
