@@ -14,14 +14,17 @@ RM = rm -f
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
+$(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+
+%.o : %.c
+	$(CC) $(CFLAG) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)
 
 fclean: clean
-	$(RM) $(NAME) $(LIBFT)
+	$(RM) $(NAME)
 
 re: fclean all
 
