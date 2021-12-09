@@ -14,6 +14,7 @@ int		main(int ac, char **av)
 	(void)av;
 	pthread_t t1;
 	pthread_t t2;
+	pthread_t t3;
 
 	/*thread create*/
 	pthread_create(&t1, NULL, &routine, NULL);  //thread init
