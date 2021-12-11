@@ -1,10 +1,10 @@
 #include "includes/philo.h"
 #include <pthread.h>
 
-void *routine()
+void *routine(void *arg)
 {
 	printf("Test from threads\n");
-	sleep(3);
+	usleep(3000000);
 	printf("Ending test\n");
 }
 

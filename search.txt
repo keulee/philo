@@ -1,4 +1,22 @@
-> usleep
+> 과제 조건
+1. 철학자는 2명 이상.
+2. 철학자는 정해진 시간 안에 먹지 않으면 죽는다.
+3. 철학자 한 명이 죽으면 프로그램을 종료한다. (죽는 시간 기준 10ms안에 종료메시지를 보내야 한다.)
+4. 철학자는 먹기 위해 포크/젓가락 2개를 집어야 한다.
+5. 철학자는 먹고->자고->생각하고를 반복한다.
+6. 프로그램 실행 인자는 총 5개 혹은 6개이다.
+     ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+     ex) ./philo 2(number_of_philosophers) 310(time to die) 100(time to eat) 100(time to sleep) 2(number of times each philosopher must eat)
+          - 철학자 수 2명
+          - 310ms안에 먹어야 철학자 생존
+          - 100ms동안 먹는다
+          - 100ms동안 잔다
+          - 모든 철학자가 2번 먹으면 프로그램 종료
+     ex) ./program 5 800 200 200 7 : 7번 다 먹으면 프로그램 종료
+     ex) ./program 4 410 200 200 : 무한 루프
+     ex) ./program 2 310 200 100 (10ms 안에 죽는 것 확인)
+
+> usleep()
 
 usleep 함수를 사용하면 일정 시간 동안 코드의 실행을 늦출 수 있습니다.
      #include <unistd.h>
@@ -24,5 +42,4 @@ tz
      int tz_dsttime; /* type of DST correction */ 
      };
 
-> pthread_creat
-
+> pthread_create()
