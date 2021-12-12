@@ -43,3 +43,13 @@ tz
      };
 
 > pthread_create()
+
+ pthread_create는 쓰레드를 생성하는 함수.
+     #include <pthread.h>
+     int pthread_create(phtread_t *thread, const phtread_attr_t *attr, void *(*start_routine)(void *), void *arg);
+
+thread : 쓰레드 식별자로서 생성된 스레드를 담을 쓰레드의 주소 정도로 생각.
+attr : 쓰레드 특성을 지정하기 위해 이용, 대개 NULL 처리. 만약 스레드의 속성을 지정하려고 한다면 pthread_attr_init등의 함수로 초기화 필요.
+start_routine : 어떤 로직을 할지 함수 포인터를 매개변수로 받음.
+arg : start_routine에 전달할 인자. start_routine에서 이 인자를 변환하여 사용.
+
