@@ -1,6 +1,9 @@
 #include "includes/philo.h"
 #include <pthread.h>
 
+pthread_mutex_t mutex;
+int	cnt = 0;
+
 void *routine(void *arg)
 {
 	pthread_t tid;
@@ -18,26 +21,58 @@ void *routine(void *arg)
 	printf("Ending thread test\n");
 }
 
+void	*count(void *arg)
+{
+	int i;
+	char *name = (char *)arg;
+
+	pthread_mutex_lock(&mutex);
+
+	///////////////// critical section /////////////////
+	cnt = 0;
+	while (i < 10)
+	{
+		printf("%s cnt: %d\n", name, cnt);
+		cnt++;
+		usleep(1000000);
+		i++;
+	}
+	//////////////// critical section //////////////////
+
+	pthread_mutex_unlock(&mutex);
+}
+
 int		main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
 	pthread_t t1;
-	// pthread_t t2;
+	pthread_t t2;
 	// pthread_t t3;
 
+	pthread_mutex_init(&mutex, NULL);
+
+	pthread_create(&t1, NULL, count, (void *)"\tt1");
+	pthread_create(&t2, NULL, count, (void *)"t2");
+
+	pthread_join(t1, NULL);
+	pthread_join(t2, NULL);
+
+	pthread_mutex_destroy(&mutex);
+
+
 	/*thread create*/
-	pthread_create(&t1, NULL, &routine, NULL);  //thread init
-	printf("main tid:%x\n", pthread_self());
-	// pthread_join(t1, NULL);
-	pthread_detach(t1);
-	int i = 0;
-	while (i < 42)
-	{
-		printf("main : %d\n", i);
-		i++;
-		usleep(1000 * 1000);
-	}
+	// pthread_create(&t1, NULL, &routine, NULL);  //thread init
+	// printf("main tid:%x\n", pthread_self());
+	// // pthread_join(t1, NULL);
+	// pthread_detach(t1);
+	// int i = 0;
+	// while (i < 42)
+	// {
+	// 	printf("main : %d\n", i);
+	// 	i++;
+	// 	usleep(1000 * 1000);
+	// }
 	// printf("here\n");
 	// pthread_create(&t2, NULL, &routine, NULL);  //thread init
 	// pthread_join(t2, NULL);

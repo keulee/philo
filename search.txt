@@ -5,57 +5,57 @@
 4. 철학자는 먹기 위해 포크/젓가락 2개를 집어야 한다.
 5. 철학자는 먹고->자고->생각하고를 반복한다.
 6. 프로그램 실행 인자는 총 5개 혹은 6개이다.
-     ./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
-     ex) ./philo 2(number_of_philosophers) 310(time to die) 100(time to eat) 100(time to sleep) 2(number of times each philosopher must eat)
-          - 철학자 수 2명
-          - 310ms안에 먹어야 철학자 생존
-          - 100ms동안 먹는다
-          - 100ms동안 잔다
-          - 모든 철학자가 2번 먹으면 프로그램 종료
-     ex) ./program 5 800 200 200 7 : 7번 다 먹으면 프로그램 종료
-     ex) ./program 4 410 200 200 : 무한 루프
-     ex) ./program 2 310 200 100 (10ms 안에 죽는 것 확인)
+	./philo number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+	ex) ./philo 2(number_of_philosophers) 310(time to die) 100(time to eat) 100(time to sleep) 2(number of times each philosopher must eat)
+		- 철학자 수 2명
+		- 310ms안에 먹어야 철학자 생존
+		- 100ms동안 먹는다
+		- 100ms동안 잔다
+		- 모든 철학자가 2번 먹으면 프로그램 종료
+	ex) ./program 5 800 200 200 7 : 7번 다 먹으면 프로그램 종료
+	ex) ./program 4 410 200 200 : 무한 루프
+	ex) ./program 2 310 200 100 (10ms 안에 죽는 것 확인)
 
 > usleep()
 
 usleep 함수를 사용하면 일정 시간 동안 코드의 실행을 늦출 수 있습니다.
-     #include <unistd.h>
-     int usleep(useconds_t microseconds);
+	#include <unistd.h>
+	int usleep(useconds_t microseconds);
 usleep 은 마이크로초: 1초 == 1000000마이크로초
 
 
 > gettimeofday
 
 특정구간의 수행시간 차이를 계산하기 위해 마이크로 단위의 시간 함수 gettimeofday 를 지원합니다.
-     #include <sys/time.h>
-     int gettimeofday(struct timeval *tv, struct timezone *tz);
+	#include <sys/time.h>
+	int gettimeofday(struct timeval *tv, struct timezone *tz);
 tv
 - 1970-01-01 00:00:00 +0000 (UTC) 이후 경과된 초(seconds)와 micro초를 저장할 buffer
 -   struct timeval { 
-        time_t tv_sec; /* seconds */ 
-        suseconds_t tv_usec; /* microseconds */ 
+	   time_t tv_sec; /* seconds */ 
+	   suseconds_t tv_usec; /* microseconds */ 
     };
 tz
 - timezone 정보로 값은 무시되며, NULL을 사용함.
 - struct timezone {
-     int tz_minuteswest; /* minutes west of Greenwich */
-     int tz_dsttime; /* type of DST correction */ 
-     };
+	int tz_minuteswest; /* minutes west of Greenwich */
+	int tz_dsttime; /* type of DST correction */ 
+	};
 
 > pthread_create()
 
  pthread_create는 쓰레드를 생성하는 함수.
-     #include <pthread.h>
-     int pthread_create(phtread_t *thread, const phtread_attr_t *attr, void *(*start_routine)(void *), void *arg);
+	#include <pthread.h>
+	int pthread_create(phtread_t *thread, const phtread_attr_t *attr, void *(*start_routine)(void *), void *arg);
 
 thread
-     - 쓰레드 식별자로서 생성된 스레드를 담을 쓰레드의 주소 정도로 생각.
+	- 쓰레드 식별자로서 생성된 스레드를 담을 쓰레드의 주소 정도로 생각.
 attr
-     - 쓰레드 특성을 지정하기 위해 이용, 대개 NULL 처리. 만약 스레드의 속성을 지정하려고 한다면 pthread_attr_init등의 함수로 초기화 필요.
+	- 쓰레드 특성을 지정하기 위해 이용, 대개 NULL 처리. 만약 스레드의 속성을 지정하려고 한다면 pthread_attr_init등의 함수로 초기화 필요.
 start_routine
-     - 어떤 로직을 할지 함수 포인터를 매개변수로 받음.
+	- 어떤 로직을 할지 함수 포인터를 매개변수로 받음.
 arg
-     - start_routine에 전달할 인자. start_routine에서 이 인자를 변환하여 사용.
+	- start_routine에 전달할 인자. start_routine에서 이 인자를 변환하여 사용.
 
 성공시 thread 초기화 및 0리턴, 실패시 thread 인자가 설정되지 않고 에러 값 반환.
 
@@ -66,9 +66,9 @@ pthread_join은 생성했던 thread를 끝날때까지 기다려줍니다. 만�
     int pthread_join(pthread_t thread, void **retval)
 
 thread
-     - join하려고 하는 thread를 명시한다.
+	- join하려고 하는 thread를 명시한다.
 retval
-     - pthread_create에서 start_routine이 반환하는 반환값을 여기 저장.
+	- pthread_create에서 start_routine이 반환하는 반환값을 여기 저장.
 
 성공시 0리턴, 실패시 에러넘버 반환. (실패시에는 좀비 스레드가 되고, 이 좀비 스레드는 자원을 소모하여 더이상 스레드를 생성할 수 없게 됨)
 
@@ -77,15 +77,60 @@ retval
 특정 thread를 해제한다.
 일반적으로 pthread_create를 통해 생성한 thread는 쓰레드 종료 시점에서 자동으로 자원이 해제/반환 되지 않는다.
 이를 해제할 수 있는 것이 pthread_join, pthread_detach이다.
-     # include <pthread.h>
-     int phtread_detach(phtread_t thread);
+	# include <pthread.h>
+	int phtread_detach(phtread_t thread);
 
 쓰레드가 독립적으로 동작하길 원할 때. "나는 기다려주지 않으니 끝나면 알아서 끝내렴."
 pthread_detach와 pthread_join을 동시에 사용할 수는 없다.
 
 thread
-     - 종료해 줄 thread.
+	- 종료해 줄 thread.
 
 성공시 0을 반환하며 실패시 오류 넘버(0이 아닌 값)를 반환.
 
 > mutex
+
+여러 개의 쓰레드가 공유하는 데이터를 보호하기 위해 사용하는 도구.
+어떤 코드 영역에 대해 한 번에 하나의 쓰레드만 실행 가능하도록 만들어서 공유 자원을 공유하도록 함.
+
+하나의 쓰레드만 접근할 수 있는 영역 : critical section
+
+> pthread_mutex_init
+
+mutex를 init하는 함수
+	#include <pthread.h>
+	int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr);
+
+mutex
+	- 초기화 할 mutex 객체
+attr
+	- mutex의 특성을 맞추기 위해 설정. 기본적으로 NULL
+	- 종류로 fast, recursive, error checking이 있는데 디폴트값은 fast.
+
+에러 시
+	- EINVAL: attr에 이상한 값이 들어옴
+	- ENOMEM: 다른 뮤텍스에서 사용한 쓰레드
+
+정적 할당 시
+	pthread_mutex_t mutex = PTHREAD_MUTX_INITIALIZER;
+
+> pthread_mutex_lock & unlock
+
+mutex 임계 구역 진입 시 그 코드 구역을 잠그고 여는 역할을 해주는 함수들.
+한 쓰레드에서 lock함수를 이용해 닫아줬다면, 다른 코드는 그 구역에 들어가기 위해 unlock할때까지 기다려야 함.
+	#include <pthread.h>
+	int pthread_mutex_lock(pthread_mutex_t *mutex);
+	int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+mutex
+	- 잠그거나 해제해 줄 쓰레드
+
+에러 시
+	pthread_mutex_lock 
+		- EINVAL: 유효하지 않은 mutex
+		- EDEADLK: 데드락 조건 발생
+	pthread_mutex_unlock 
+		- EINVAL: 유효하지 않은 mutex
+		- EPERM: 현재 쓰레드가 잠겨져 있지 않음
+
+
