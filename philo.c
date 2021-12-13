@@ -3,9 +3,19 @@
 
 void *routine(void *arg)
 {
-	printf("Test from threads\n");
-	usleep(3000000);
-	printf("Ending test\n");
+	pthread_t tid;
+	
+	tid = pthread_self();
+
+	int i = 0;
+	printf("\ttid: %x \n", tid);
+	while (i < 10)
+	{
+		printf("\tnew thread: %d\n", i);
+		i++;
+		usleep(1000 * 1000);
+	}
+	printf("Ending thread test\n");
 }
 
 int		main(int ac, char **av)
@@ -13,14 +23,24 @@ int		main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	pthread_t t1;
-	pthread_t t2;
-	pthread_t t3;
+	// pthread_t t2;
+	// pthread_t t3;
 
 	/*thread create*/
 	pthread_create(&t1, NULL, &routine, NULL);  //thread init
-	pthread_create(&t2, NULL, &routine, NULL);  //thread init
-	pthread_join(t1, NULL);
-	pthread_join(t2, NULL);
+	printf("main tid:%x\n", pthread_self());
+	// pthread_join(t1, NULL);
+	pthread_detach(t1);
+	int i = 0;
+	while (i < 42)
+	{
+		printf("main : %d\n", i);
+		i++;
+		usleep(1000 * 1000);
+	}
+	// printf("here\n");
+	// pthread_create(&t2, NULL, &routine, NULL);  //thread init
+	// pthread_join(t2, NULL);
 
 	// struct timeval;
 	// gettimeofday();
