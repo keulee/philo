@@ -48,7 +48,6 @@ int		main(int ac, char **av)
 	(void)av;
 	pthread_t t1;
 	pthread_t t2;
-	// pthread_t t3;
 
 	pthread_mutex_init(&mutex, NULL);
 
