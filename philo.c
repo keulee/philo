@@ -113,8 +113,5 @@ int		main(int ac, char **av)
 	// diff_tv_sec = endtime.tv_sec - starttime.tv_sec;
 	// diff_tv_usec = (endtime.tv_usec - starttime.tv_usec) / 1000;
 	
-
-
-
 	return (0);
 }
