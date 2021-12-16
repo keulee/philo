@@ -1,6 +1,7 @@
 NAME = philo
 
-SRCS = philo.c
+SRCS = philo.c \
+		philo_utils.c
 
 HEADER = ./includes/philo.h
 

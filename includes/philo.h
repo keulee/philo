@@ -13,8 +13,12 @@ typedef struct s_info {
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
-	int	limit_eattime;
+	int	max_eattime;
 }				t_info;
 
+char	**ft_split(char const *s, char c);
+int		argument_check(char *str);
+int		ft_only_digit(char *str);
+int		ft_digit(char c);
 
 #endif
