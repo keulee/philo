@@ -6,16 +6,17 @@ HEADER = ./includes/philo.h
 
 OBJS = $(SRCS:.c=.o)
 
-CC = clang
+CC = clang -g3 -fsanitize=address
+#CC = clang -g3 -fsanitize=thread
 
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -pthread 
 
 RM = rm -f
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) 
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
 
 %.o : %.c
 	$(CC) $(CFLAG) -c $< -o $@
