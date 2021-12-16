@@ -8,6 +8,10 @@
 # include <stdlib.h>
 # include <pthread.h>
 
+typedef	struct s_philo {
+
+}				t_philol;
+
 typedef struct s_info {
 	int	num_philo;
 	int	time_to_die;
@@ -24,5 +28,7 @@ int		ft_digit(char c);
 
 int		ft_parse_init(int ac, char **av, t_info *info);
 int		parsing_arg(int ac, char **av, int *i, t_info *info);
+
+int		one_philo(t_info *info);
 
 #endif

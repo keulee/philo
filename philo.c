@@ -6,6 +6,9 @@ int	main(int ac, char **av)
 
 	if (!ft_parse_init(ac, av, &info))
 		return (1);
+	if (info.num_philo == 1)
+		return (one_philo(&info));
+
 	ft_debug(&info);
 	return (0);
 }
