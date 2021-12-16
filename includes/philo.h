@@ -16,9 +16,13 @@ typedef struct s_info {
 	int	max_eattime;
 }				t_info;
 
-char	**ft_split(char const *s, char c);
+void	ft_debug(t_info *info);
+
 int		argument_check(char *str);
 int		ft_only_digit(char *str);
 int		ft_digit(char c);
+
+int		ft_parse_init(int ac, char **av, t_info *info);
+int		parsing_arg(int ac, char **av, int *i, t_info *info);
 
 #endif

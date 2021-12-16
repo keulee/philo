@@ -14,18 +14,18 @@ int	argument_check(char *str)
 		if (str[i++] == '-')
 			neg = neg * -1;
 		if (str[i] == '\0' || str[i] == '0')
-			return (0);
+			return (-1);
 	}
 	if (!ft_only_digit(&str[i]))
-		return (0);
+		return (-1);
 	if (str[i] == '0' && ft_digit(str[i + 1]))
-		return (0);
+		return (-1);
 	while (ft_digit(str[i]))
 		arg = arg * 10 + (str[i++] - 48);
 	if (neg == -1)
 		arg *= -1;
 	if (arg > 2147483647 || arg < -2147483648 || arg < 0)
-		return (0);
+		return (-1);
 	return (arg);
 }
 
