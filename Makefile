@@ -10,6 +10,7 @@ HEADER = ./includes/philo.h
 
 OBJS = $(SRCS:.c=.o)
 
+#CC = clang
 CC = clang -g3 -fsanitize=address
 #CC = clang -g3 -fsanitize=thread
 

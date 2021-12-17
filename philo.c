@@ -8,21 +8,11 @@ int	main(int ac, char **av)
 		return (1);
 	if (info.num_philo == 1)
 		return (one_philo(&info));
-	if (philo_init(&info))
+	if (!philo_init(&info))
 		return (1);
-
-	int i = 0;
-	i = 0;
-	while (i < info.num_philo)
-	{
-		if (pthread_mutex_init(&info.fork[i], NULL))
-		{
-			printf("Error: Fail to init mutex\n");
-			return (1);
-		}
-		i++;
-	}
-
+	if (!mutex_init(&info))
+		return (1);
+		
 	ft_debug(&info);
 	return (0);
 }

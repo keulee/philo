@@ -40,6 +40,7 @@ int		ft_digit(char c);
 int		ft_parse_init(int ac, char **av, t_info *info);
 int		parsing_arg(int ac, char **av, int *i, t_info *info);
 int		philo_init(t_info *info);
+int		mutex_init(t_info *info);
 
 int		one_philo(t_info *info);
 void	*test(void *test);
