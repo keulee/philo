@@ -50,3 +50,27 @@ int	ft_parse_init(int ac, char **av, t_info *info)
 	}
 	return (1);
 }
+
+void	*test(void *test)
+{
+	int i = 0;
+	t_philo *philo;
+
+	philo = (t_philo *)test;
+	printf("test\n");
+	return (NULL);
+}
+
+int		philo_init(t_info *info)
+{
+	int i; 
+
+	i = 0;
+	info->philo = (t_philo *)malloc(sizeof(t_philo) * info->num_philo);
+	if (!info->philo)
+	{
+		printf("Error: Malloc fail - t_philo struct\n");
+		return (1);
+	}
+	return (0);
+}
