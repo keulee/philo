@@ -11,40 +11,26 @@ void	*philo_engine(void *arg_ptr)
 	{
 		if (philo->index % 2 == 1)
 		{
+			pthread_mutex_lock(&(info->message));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
+			pthread_mutex_unlock(&(info->message));
 			philo->n_time = get_time();
-			usleep(100);
+			// while (get_time() - philo->n_time < info->time_to_eat)
+				usleep(10000000);
 		}
 	}
-	else //홀수번째 필로
+	int i = 0;
+	//홀수번째 필로
+	while (info->die)
 	{
-		if (philo->index % 2 == 0)
-		{
-			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-			philo->n_time = get_time();
-			usleep(100);
-		}
+		pthread_mutex_lock(&(info->message));
+		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+		pthread_mutex_unlock(&(info->message));
+		philo->n_time = get_time();
+		while (get_time() - philo->n_time < info->time_to_eat)
+			usleep(10000000);
 	}
-	
 	return (NULL);
-}
-
-int	create_pthread_philo(t_info *info)
-{
-	int i;
-
-	i = 0;
-	info->s_time = get_time();
-	while(i < info->num_philo)
-	{
-		if (pthread_create(&(info->philo[i].id), NULL, &philo_engine, (void *)&(info->philo[i])))
-		{
-			printf("Error: create thread failed\n");
-			return (0);
-		}
-		i++;
-	}
-	return (1);
 }
 
 int	main(int ac, char **av)
@@ -62,6 +48,12 @@ int	main(int ac, char **av)
 	if (!create_pthread_philo(&info))
 		return (1);
 
+	int i = 0;
+	while (i < info.num_philo)
+	{
+		pthread_detach(info.philo[i].id);
+		i++;
+	}
 	// ft_debug(&info);
 	return (0);
 }

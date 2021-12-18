@@ -48,6 +48,11 @@ int	ft_parse_init(int ac, char **av, t_info *info)
 		}
 		i++;
 	}
+	info->die = 0;
+	info->eat = 0;
+	info->s_time = 0;
+	info->philo = NULL;
+	info->fork = NULL;
 	return (1);
 }
 

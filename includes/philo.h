@@ -25,7 +25,7 @@ typedef struct s_info {
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				max_eattime;
-	int				s_time;
+	long long		s_time;
 	int				die;
 	int				eat;
 	t_philo			*philo;
@@ -48,5 +48,9 @@ int		one_philo(t_info *info);
 void	*test(void *test);
 
 long long	get_time(void);
+
+int	create_pthread_philo(t_info *info);
+
+void	*philo_engine(void *arg_ptr);
 
 #endif
