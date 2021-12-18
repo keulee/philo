@@ -10,12 +10,12 @@
 
 typedef	struct s_philo {
 	struct s_info	*info;
-	int				philo_index;
+	int				index;
 	int				l_fork;
 	int				r_fork;
 	int				eat_count;
 	long long		last_eat_time;
-	long long		present_time;
+	long long		n_time;
 	pthread_t 		id;
 }				t_philo;
 
@@ -25,7 +25,9 @@ typedef struct s_info {
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				max_eattime;
-	int				start_time;
+	int				s_time;
+	int				die;
+	int				eat;
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t message;
@@ -44,5 +46,7 @@ int		mutex_init(t_info *info);
 
 int		one_philo(t_info *info);
 void	*test(void *test);
+
+long long	get_time(void);
 
 #endif

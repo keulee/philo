@@ -76,7 +76,7 @@ int	philo_init(t_info *info)
 	}
 	while (i < info->num_philo)
 	{
-		info->philo[i].philo_index = 0;
+		info->philo[i].index = i;
 		info->philo[i].l_fork = i;
 		info->philo[i].r_fork = (i + 1) % info->num_philo;
 		info->philo[i].eat_count = 0;

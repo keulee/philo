@@ -4,6 +4,7 @@ SRCS = philo.c \
 		philo_utils.c \
 		philo_init.c \
 		philo_one.c \
+		philo_time.c \
 		philo_debug.c
 
 HEADER = ./includes/philo.h

@@ -1,5 +1,52 @@
 #include "includes/philo.h"
 
+void	*philo_engine(void *arg_ptr)
+{
+	t_philo *philo;
+	t_info	*info;
+
+	philo = (t_philo *)arg_ptr;
+	info = philo->info;
+	if (info->num_philo % 2 == 0) //짝수번째 필로
+	{
+		if (philo->index % 2 == 1)
+		{
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
+			philo->n_time = get_time();
+			usleep(100);
+		}
+	}
+	else //홀수번째 필로
+	{
+		if (philo->index % 2 == 0)
+		{
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			philo->n_time = get_time();
+			usleep(100);
+		}
+	}
+	
+	return (NULL);
+}
+
+int	create_pthread_philo(t_info *info)
+{
+	int i;
+
+	i = 0;
+	info->s_time = get_time();
+	while(i < info->num_philo)
+	{
+		if (pthread_create(&(info->philo[i].id), NULL, &philo_engine, (void *)&(info->philo[i])))
+		{
+			printf("Error: create thread failed\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	main(int ac, char **av)
 {
 	t_info	info;
@@ -12,8 +59,10 @@ int	main(int ac, char **av)
 		return (1);
 	if (!mutex_init(&info))
 		return (1);
-		
-	ft_debug(&info);
+	if (!create_pthread_philo(&info))
+		return (1);
+
+	// ft_debug(&info);
 	return (0);
 }
 
