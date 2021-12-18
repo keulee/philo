@@ -21,10 +21,10 @@ typedef	struct s_philo {
 
 typedef struct s_info {
 	int				num_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				max_eattime;
+	int				living_time;
+	int				eating_time;
+	int				sleeping_time;
+	int				max_eatcount;
 	long long		s_time;
 	int				die;
 	int				eat;
@@ -40,12 +40,11 @@ int		ft_only_digit(char *str);
 int		ft_digit(char c);
 
 int		ft_parse_init(int ac, char **av, t_info *info);
-int		parsing_arg(int ac, char **av, int *i, t_info *info);
+int		parse_arg(int ac, char **av, int *i, t_info *info);
 int		philo_init(t_info *info);
 int		mutex_init(t_info *info);
 
 int		one_philo(t_info *info);
-void	*test(void *test);
 
 long long	get_time(void);
 

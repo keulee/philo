@@ -7,29 +7,77 @@ void	*philo_engine(void *arg_ptr)
 
 	philo = (t_philo *)arg_ptr;
 	info = philo->info;
-	if (info->num_philo % 2 == 0) //짝수번째 필로
-	{
-		if (philo->index % 2 == 1)
+	// if (info->num_philo % 2 == 1) //짝수번째 필로
+	// {
+		if (philo->index % 2 == 0) //짝수번째 필로 먼저 생각하게 한다. 홀수번째 필로는 먼저 먹는걸로
 		{
 			pthread_mutex_lock(&(info->message));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
 			pthread_mutex_unlock(&(info->message));
 			philo->n_time = get_time();
-			// while (get_time() - philo->n_time < info->time_to_eat)
-				usleep(10000000);
+			while (get_time() - philo->n_time < info->eating_time)
+				usleep(100);
 		}
-	}
-	int i = 0;
-	//홀수번째 필로
-	while (info->die)
+	// }
+	// int i = 0;
+	while (!info->die)
 	{
-		pthread_mutex_lock(&(info->message));
-		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-		pthread_mutex_unlock(&(info->message));
-		philo->n_time = get_time();
-		while (get_time() - philo->n_time < info->time_to_eat)
-			usleep(10000000);
+		if (philo->index % 2 == 1) // 홀수 일때 먹기
+		{
+			pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+
+			pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			pthread_mutex_lock(&(info->fork[philo->r_fork]));
+		}
+		// if (i == 5)
+		// 	break ;
+		// i++;
 	}
+	// 	pthread_mutex_lock(&(info->message));
+	// 	philo->n_time = get_time();
+	// 	printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is aliving");
+	// 	pthread_mutex_unlock(&(info->message));
+	// 	info->die++;
+	// }
+	// }
+	// int i = 0;
+	// //홀수번째 필로
+	// while (!info->die)
+	// {
+	// 	if (info->num_philo % 2 == 0)
+	// 	{
+	// 		pthread_mutex_lock(&(info->message));
+	// 		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+	// 		pthread_mutex_unlock(&(info->message));
+	// 		philo->n_time = get_time();
+	// 		while (get_time() - philo->n_time < info->time_to_eat)
+	// 			usleep(100);
+	// 	}
+	// 	i = 0;
+	// 	int loop = loop % info->num_philo;
+	// 	while (i < info->num_philo / 2)
+	// 	{
+	// 		if (philo->index == (loop + 1 * 2) % info->num_philo)
+	// 		{
+	// 			pthread_mutex_lock(&(info->message));
+	// 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+	// 			pthread_mutex_unlock(&(info->message));
+	// 			philo->n_time = get_time();
+	// 			while (get_time() - philo->n_time < info->time_to_eat)
+	// 				usleep(100);
+	// 		}
+	// 		i++;
+	// 	}
+	// 	pthread_mutex_lock(&(info->message));
+	// 	printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+	// 	pthread_mutex_unlock(&(info->message));
+	// 	philo->n_time = get_time();
+	// 	while (get_time() - philo->n_time < info->time_to_eat)
+	// 		usleep(100);
+	// }
 	return (NULL);
 }
 
@@ -51,9 +99,11 @@ int	main(int ac, char **av)
 	int i = 0;
 	while (i < info.num_philo)
 	{
-		pthread_detach(info.philo[i].id);
+		pthread_join(info.philo[i].id, NULL);
+		pthread_mutex_destroy(&(info.fork[i]));
 		i++;
 	}
+	pthread_mutex_destroy(&(info.message));
 	// ft_debug(&info);
 	return (0);
 }

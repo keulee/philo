@@ -3,7 +3,7 @@
 int	one_philo(t_info *info)
 {
 	printf("0 1 has taken a fork\n");
-	usleep(info->time_to_die * 1000);
-	printf("%d 1 died\n", info->time_to_die + 1);
+	usleep(info->living_time * 1000);
+	printf("%d 1 died\n", info->living_time + 1);
 	return (1);
 }
