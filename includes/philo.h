@@ -15,8 +15,9 @@ typedef	struct s_philo {
 	int				r_fork;
 	int				eat_count;
 	long long		last_eat_time;
-	long long		n_time;
+	long long		present_time;
 	pthread_t 		id;
+	pthread_mutex_t	block_letime;
 }				t_philo;
 
 typedef struct s_info {
@@ -31,6 +32,7 @@ typedef struct s_info {
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t message;
+	pthread_mutex_t block_ptime;
 }				t_info;
 
 void	ft_debug(t_info *info);

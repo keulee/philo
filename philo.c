@@ -14,72 +14,83 @@ void	*philo_engine(void *arg_ptr)
 			pthread_mutex_lock(&(info->message));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
 			pthread_mutex_unlock(&(info->message));
-			philo->n_time = get_time();
-			while (get_time() - philo->n_time < info->eating_time)
+			pthread_mutex_lock(&(info->block_ptime));
+			philo->present_time = get_time();
+			pthread_mutex_unlock(&(info->block_ptime));
+			while (get_time() - philo->present_time < info->eating_time)
 				usleep(100);
 		}
 	// }
 	// int i = 0;
 	while (!info->die)
 	{
-		if (philo->index % 2 == 1) // 홀수 일때 먹기
-		{
+		// if (philo->index % 2 == 1) // 홀수 일때 먹기
+		// {
 			pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			pthread_mutex_lock(&(philo->block_letime));
+			philo->last_eat_time = get_time();
+			pthread_mutex_unlock(&(philo->block_letime));
+			info->eat++;
+			pthread_mutex_lock(&(info->block_ptime));
+			philo->present_time = get_time();
+			pthread_mutex_unlock(&(info->block_ptime));
+			while (get_time() - philo->present_time < info->eating_time)
+				usleep(100);
 			pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
-		}
+		// }
 		// if (i == 5)
 		// 	break ;
 		// i++;
 	}
-	// 	pthread_mutex_lock(&(info->message));
-	// 	philo->n_time = get_time();
-	// 	printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is aliving");
-	// 	pthread_mutex_unlock(&(info->message));
-	// 	info->die++;
-	// }
-	// }
-	// int i = 0;
-	// //홀수번째 필로
-	// while (!info->die)
-	// {
-	// 	if (info->num_philo % 2 == 0)
-	// 	{
-	// 		pthread_mutex_lock(&(info->message));
-	// 		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-	// 		pthread_mutex_unlock(&(info->message));
-	// 		philo->n_time = get_time();
-	// 		while (get_time() - philo->n_time < info->time_to_eat)
-	// 			usleep(100);
-	// 	}
-	// 	i = 0;
-	// 	int loop = loop % info->num_philo;
-	// 	while (i < info->num_philo / 2)
-	// 	{
-	// 		if (philo->index == (loop + 1 * 2) % info->num_philo)
-	// 		{
-	// 			pthread_mutex_lock(&(info->message));
-	// 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-	// 			pthread_mutex_unlock(&(info->message));
-	// 			philo->n_time = get_time();
-	// 			while (get_time() - philo->n_time < info->time_to_eat)
-	// 				usleep(100);
-	// 		}
-	// 		i++;
-	// 	}
-	// 	pthread_mutex_lock(&(info->message));
-	// 	printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-	// 	pthread_mutex_unlock(&(info->message));
-	// 	philo->n_time = get_time();
-	// 	while (get_time() - philo->n_time < info->time_to_eat)
-	// 		usleep(100);
-	// }
+
 	return (NULL);
 }
+
+void	monitor_thread(t_info *info)
+{
+	int i;
+
+	i = 0;
+	while (i < info->num_philo)
+	{
+		pthread_mutex_lock(&(info->philo[i].block_letime));
+		info->philo[i].last_eat_time = get_time();
+		pthread_mutex_lock(&(info->philo[i].block_letime));
+		i++;
+	}
+	
+	while (!(info->eat))
+	{
+		i = 0;
+		int how_many_time_eat = 0;
+		while (i < info->num_philo)
+		{
+			pthread_mutex_lock(&(info->philo[i].block_letime));
+			if (get_time() - info->philo[i].last_eat_time > info->living_time)
+			{
+				printf("%lld %d %s\n", get_time() - info->s_time, info->philo[i].index + 1, "died");
+				info->die = 1;
+				break ;
+			}
+			pthread_mutex_unlock(&(info->philo[i].block_letime));
+			i++;
+		}
+		i = 0;
+		while (info->max_eatcount && i < info->num_philo)
+		{
+			if (info->philo[i].eat_count >= info->max_eatcount)
+				how_many_time_eat++;
+		}
+		if (how_many_time_eat == info->num_philo)
+			info->eat = 1;
+	}
+}
+
 
 int	main(int ac, char **av)
 {
@@ -95,15 +106,23 @@ int	main(int ac, char **av)
 		return (1);
 	if (!create_pthread_philo(&info))
 		return (1);
+	monitor_thread(&info);
+	//monitor_thread_function
+	//to do : make function that monitor all changes of thread 
+	//(which will be working with create_thread_philo)
 
+	printf("eat time : %d\n", info.eat);
 	int i = 0;
 	while (i < info.num_philo)
 	{
 		pthread_join(info.philo[i].id, NULL);
+		// pthread_detach(info.philo[i].id);
 		pthread_mutex_destroy(&(info.fork[i]));
 		i++;
 	}
 	pthread_mutex_destroy(&(info.message));
+	pthread_mutex_destroy(&(info.block_ptime));
+	pthread_mutex_destroy(&(info.philo->block_letime));
 	// ft_debug(&info);
 	return (0);
 }
