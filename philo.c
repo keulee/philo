@@ -42,10 +42,6 @@ void	*philo_engine(void *arg_ptr)
 				usleep(100);
 			pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
-		// }
-		// if (i == 5)
-		// 	break ;
-		// i++;
 	}
 
 	return (NULL);
