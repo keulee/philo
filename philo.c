@@ -7,8 +7,8 @@ void	*philo_engine(void *arg_ptr)
 
 	philo = (t_philo *)arg_ptr;
 	info = philo->info;
-	// if (info->num_philo % 2 == 1) //짝수번째 필로
-	// {
+	if (info->num_philo % 2 == 1) //짝수번째 필로
+	{
 		if (philo->index % 2 == 0) //짝수번째 필로 먼저 생각하게 한다. 홀수번째 필로는 먼저 먹는걸로
 		{
 			pthread_mutex_lock(&(info->message));
@@ -20,7 +20,7 @@ void	*philo_engine(void *arg_ptr)
 			while (get_time() - philo->present_time < info->eating_time)
 				usleep(100);
 		}
-	// }
+	}
 	// int i = 0;
 	while (!info->die)
 	{
@@ -81,6 +81,7 @@ void	monitor_thread(t_info *info)
 		{
 			if (info->philo[i].eat_count >= info->max_eatcount)
 				how_many_time_eat++;
+			i++;
 		}
 		if (how_many_time_eat == info->num_philo)
 			info->eat = 1;
@@ -111,8 +112,8 @@ int	main(int ac, char **av)
 	int i = 0;
 	while (i < info.num_philo)
 	{
-		pthread_join(info.philo[i].id, NULL);
-		// pthread_detach(info.philo[i].id);
+		// pthread_join(info.philo[i].id, NULL);
+		pthread_detach(info.philo[i].id);
 		pthread_mutex_destroy(&(info.fork[i]));
 		i++;
 	}
