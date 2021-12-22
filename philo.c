@@ -21,7 +21,6 @@ void	*philo_engine(void *arg_ptr)
 				usleep(100);
 		}
 	}
-	// int i = 0;
 	while (!info->die)
 	{
 		// if (philo->index % 2 == 1) // 홀수 일때 먹기
