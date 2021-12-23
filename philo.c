@@ -111,8 +111,8 @@ int	main(int ac, char **av)
 	int i = 0;
 	while (i < info.num_philo)
 	{
-		// pthread_join(info.philo[i].id, NULL);
-		pthread_detach(info.philo[i].id);
+		pthread_join(info.philo[i].id, NULL);
+		// pthread_detach(info.philo[i].id);
 		pthread_mutex_destroy(&(info.fork[i]));
 		i++;
 	}
