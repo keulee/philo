@@ -103,6 +103,23 @@ void	monitor_thread(t_info *info)
 	}
 }
 
+void	ft_test(t_info *info)
+{
+	int i;
+
+	i = 0;
+	while (!(info->eat))
+	{
+		// printf("here?\n");
+		if (info->philo->eat_count == info->max_eatcount)
+		{
+			info->eat = 1;
+			printf("done test\n");
+			return ;
+		}
+		i++;
+	}
+}
 
 int	main(int ac, char **av)
 {
@@ -118,25 +135,26 @@ int	main(int ac, char **av)
 		return (1);
 	if (!create_pthread_philo(&info))
 		return (1);
-	monitor_thread(&info);
+	ft_test(&info);
+	// monitor_thread(&info);
 	//monitor_thread_function
 	//to do : make function that monitor all changes of thread 
 	//(which will be working with create_thread_philo)
-	if (!(info.die))
-		printf("done\n");
+	// if (!(info.die))
+		// printf("done\n");
 
-	printf("eat time : %d\n", info.eat);
+	// printf("eat time : %d\n", info.eat);
 	int i = 0;
 	while (i < info.num_philo)
 	{
 		pthread_join(info.philo[i].id, NULL);
 		// pthread_detach(info.philo[i].id);
-		pthread_mutex_destroy(&(info.fork[i]));
+		// pthread_mutex_destroy(&(info.fork[i]));
 		i++;
 	}
 	pthread_mutex_destroy(&(info.message));
-	pthread_mutex_destroy(&(info.block_ptime));
-	pthread_mutex_destroy(&(info.philo->block_letime));
+	// pthread_mutex_destroy(&(info.block_ptime));
+	// pthread_mutex_destroy(&(info.philo->block_letime));
 	// ft_debug(&info);
 	return (0);
 }

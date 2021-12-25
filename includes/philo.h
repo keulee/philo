@@ -29,6 +29,8 @@ typedef struct s_info {
 	long long		s_time;
 	int				die;
 	int				eat;
+	int				test;
+	int				test_i;
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t message;
@@ -53,5 +55,7 @@ long long	get_time(void);
 int	create_pthread_philo(t_info *info);
 
 void	*philo_engine(void *arg_ptr);
+
+void	*philo_test(void *ptr);
 
 #endif
