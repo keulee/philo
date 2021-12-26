@@ -106,17 +106,36 @@ void	monitor_thread(t_info *info)
 void	ft_test(t_info *info)
 {
 	int i;
+	int eat_c;
 
 	i = 0;
+	eat_c = 0;
+	while (i < info->num_philo)
+	{
+		info->philo[i].last_eat_time = get_time();
+		i++;
+	}
 	while (!(info->eat))
 	{
-		if (info->philo->eat_count == info->max_eatcount)
+		while (i < info->num_philo && !(info->die))
 		{
-			info->eat = 1;
-			printf("done test\n");
-			return ;
+			if (get_time() - info->philo[i].last_eat_time < info->living_time)
+			{
+				printf("%lld %d %s\n", get_time() - info->s_time, info->philo[i].index + 1, "died");
+				info->die = 1;
+			}
+			i++;
 		}
-		i++;
+		if (info->die == 1)
+			break ;
+		i = 0;
+		while (i < info->num_philo && info->max_eatcount)
+		{
+			if (info->philo[i].eat_count >= info->max_eatcount)
+				eat_c++;
+		}
+		if (eat_c == info->num_philo)
+			info->eat = 1;
 	}
 }
 
@@ -135,6 +154,8 @@ int	main(int ac, char **av)
 	if (!create_pthread_philo(&info))
 		return (1);
 	ft_test(&info);
+	if (!info.die)
+		printf("all philo miam miam\n");
 	// monitor_thread(&info);
 	//monitor_thread_function
 	//to do : make function that monitor all changes of thread 
