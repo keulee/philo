@@ -26,18 +26,52 @@ void	*philo_test(void *ptr)
 
 	philo = ptr;
 	info = philo->info;
-	while (!(info->test))
+	if (philo->index % 2 == 1) // when the index of philo is odd (1, 3, ... 2n - 1)
+	// thinking first, let the even number philo eat first
 	{
-		pthread_mutex_lock(&(info->message));
-		printf("philo %d hihi\n", philo->index);
-		usleep(1000 * 1000);
-		pthread_mutex_unlock(&(info->message));
-		info->philo[philo->index].eat_count++;
-		pthread_mutex_lock(&(info->message));
-		printf("philo[%d] eat count = %d\n", philo->index,info->philo[philo->index].eat_count);
-		pthread_mutex_unlock(&(info->message));
-		if (info->eat)
-			return (NULL);
+		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
+		usleep(15000);
+	}
+	// }
+	while (!info->die)
+	{
+		if (info->num_philo % 2 == 0) //number of philo is even
+		{
+			pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			philo->last_eat_time = get_time();
+			philo->eat_count++;
+			usleep(info->eating_time * 1000);
+			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
+			pthread_mutex_unlock(&(info->fork[philo->r_fork]));
+		}
+		else //number of philo is odd
+		{
+			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
+				pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			else
+				pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
+				pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			else
+				pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			philo->last_eat_time = get_time();
+			philo->eat_count++;
+			usleep(info->eating_time * 1000);
+			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
+			pthread_mutex_unlock(&(info->fork[philo->r_fork]));
+			
+		}
+		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is sleeping");
+		usleep(info->sleeping_time * 1000);
+		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
+		usleep(15000);
 	}
 	return (NULL);
 }

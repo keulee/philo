@@ -110,7 +110,6 @@ void	ft_test(t_info *info)
 	i = 0;
 	while (!(info->eat))
 	{
-		// printf("here?\n");
 		if (info->philo->eat_count == info->max_eatcount)
 		{
 			info->eat = 1;
