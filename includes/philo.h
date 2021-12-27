@@ -29,12 +29,13 @@ typedef struct s_info {
 	long long		s_time;
 	int				die;
 	int				eat;
-	int				test;
-	int				test_i;
+	// int				test;
+	// int				test_i;
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t message;
 	pthread_mutex_t block_ptime;
+	pthread_mutex_t protect_die;
 }				t_info;
 
 void	ft_debug(t_info *info);
@@ -57,5 +58,7 @@ int	create_pthread_philo(t_info *info);
 void	*philo_engine(void *arg_ptr);
 
 void	*philo_test(void *ptr);
+
+void	ft_usleep(long long time);
 
 #endif

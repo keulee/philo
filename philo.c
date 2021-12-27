@@ -112,7 +112,9 @@ void	ft_test(t_info *info)
 	eat_c = 0;
 	while (i < info->num_philo)
 	{
+		pthread_mutex_lock(&(info->philo[i].block_letime));
 		info->philo[i].last_eat_time = get_time();
+		pthread_mutex_unlock(&(info->philo[i].block_letime));
 		i++;
 	}
 	while (!(info->eat))
@@ -133,6 +135,7 @@ void	ft_test(t_info *info)
 		{
 			if (info->philo[i].eat_count >= info->max_eatcount)
 				eat_c++;
+			i++;
 		}
 		if (eat_c == info->num_philo)
 			info->eat = 1;

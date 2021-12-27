@@ -29,7 +29,7 @@ void	init_rest(t_info *info)
 	info->die = 0;
 	info->eat = 0;
 	info->s_time = 0;
-	info->test = 0;
+	// info->test = 0;
 	info->philo = NULL;
 	info->fork = NULL;
 }

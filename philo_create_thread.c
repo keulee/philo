@@ -37,41 +37,49 @@ void	*philo_test(void *ptr)
 	{
 		if (info->num_philo % 2 == 0) //number of philo is even
 		{
-			pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
+				pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			else
+				pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-			pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
+				pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			else
+				pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time();
+			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
-			usleep(info->eating_time * 1000);
+			ft_usleep(info->eating_time);
+			// usleep(info->eating_time * 1000);
 			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
 			pthread_mutex_unlock(&(info->fork[philo->r_fork]));
 		}
 		else //number of philo is odd
 		{
-			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
-				pthread_mutex_lock(&(info->fork[philo->l_fork]));
-			else
-				pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
-				pthread_mutex_lock(&(info->fork[philo->r_fork]));
-			else
-				pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time();
+			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
-			usleep(info->eating_time * 1000);
+			ft_usleep(info->eating_time);
+			// usleep(info->eating_time * 1000);
 			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
-			pthread_mutex_unlock(&(info->fork[philo->r_fork]));
-			
+			pthread_mutex_unlock(&(info->fork[philo->r_fork]));			
 		}
+		if (info->eat == 1)
+			break ;
 		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is sleeping");
-		usleep(info->sleeping_time * 1000);
+		ft_usleep(info->sleeping_time);
+		// usleep(info->sleeping_time * 1000);
 		printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
-		usleep(15000);
+		// usleep(15000);
 	}
 	return (NULL);
 }
