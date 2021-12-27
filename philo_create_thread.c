@@ -45,15 +45,20 @@ void	*philo_test(void *ptr)
 				pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			if (philo->l_fork == philo->r_fork)
+			{
+				ft_usleep(info->living_time * 2);
+				return (NULL);
+			}
 			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
 				pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			else
 				pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			pthread_mutex_lock(&(philo->block_letime));
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time();
 			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
@@ -68,11 +73,16 @@ void	*philo_test(void *ptr)
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			if (philo->l_fork == philo->r_fork)
+			{
+				ft_usleep(info->living_time * 2);
+				return (NULL);
+			}
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			pthread_mutex_lock(&(philo->block_letime));
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time();
 			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;

@@ -122,7 +122,7 @@ void	ft_test(t_info *info)
 		while (i < info->num_philo && !(info->die))
 		{
 			// pthread_mutex_lock(&(info->protect_die));
-			if (get_time() - info->philo[i].last_eat_time < info->living_time)
+			if (get_time() - info->philo[i].last_eat_time > info->living_time)
 			{
 				printf("%lld %d %s\n", get_time() - info->s_time, info->philo[i].index + 1, "died");
 				info->die = 1;
