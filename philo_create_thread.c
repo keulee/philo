@@ -8,8 +8,7 @@ int	create_pthread_philo(t_info *info)
 	info->s_time = get_time();
 	while(i < info->num_philo)
 	{
-		// if (pthread_create(&(info->philo[i].id), NULL, &philo_engine, (void *)&(info->philo[i])))
-		if (pthread_create(&(info->philo[i].id), NULL, &philo_test, (void *)&(info->philo[i])))
+		if (pthread_create(&(info->philo[i].id), NULL, &philo_engine, (void *)&(info->philo[i])))
 		{
 			printf("Error: create thread failed\n");
 			return (0);
@@ -19,7 +18,7 @@ int	create_pthread_philo(t_info *info)
 	return (1);
 }
 
-void	*philo_test(void *ptr)
+void	*philo_engine(void *ptr)
 {
 	t_philo *philo;
 	t_info *info;
@@ -45,11 +44,11 @@ void	*philo_test(void *ptr)
 				pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
-			if (philo->l_fork == philo->r_fork)
-			{
-				ft_usleep(info->living_time * 2);
-				return (NULL);
-			}
+			// if (philo->l_fork == philo->r_fork)
+			// {
+			// 	ft_usleep(info->living_time * 2);
+			// 	return (NULL);
+			// }
 			if (philo->index % 2 == 0) //index of philo is even (odd order of philo)
 				pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			else
@@ -73,11 +72,11 @@ void	*philo_test(void *ptr)
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
-			if (philo->l_fork == philo->r_fork)
-			{
-				ft_usleep(info->living_time * 2);
-				return (NULL);
-			}
+			// if (philo->l_fork == philo->r_fork)
+			// {
+			// 	ft_usleep(info->living_time * 2);
+			// 	return (NULL);
+			// }
 			if (!info->die)
 				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			pthread_mutex_lock(&(philo->block_letime));

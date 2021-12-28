@@ -29,8 +29,6 @@ typedef struct s_info {
 	long long		s_time;
 	int				die;
 	int				eat;
-	// int				test;
-	// int				test_i;
 	t_philo			*philo;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t message;
