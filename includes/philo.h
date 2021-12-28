@@ -51,12 +51,14 @@ int		one_philo(t_info *info);
 
 long long	get_time(void);
 
-int	create_pthread_philo(t_info *info);
+int		create_pthread_philo(t_info *info);
 
 void	*philo_engine(void *arg_ptr);
 
 void	*philo_test(void *ptr);
 
 void	ft_usleep(long long time);
+
+void	monitor_thread(t_info *info);
 
 #endif

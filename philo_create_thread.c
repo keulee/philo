@@ -62,7 +62,6 @@ void	*philo_engine(void *ptr)
 			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
 			ft_usleep(info->eating_time);
-			// usleep(info->eating_time * 1000);
 			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
 			pthread_mutex_unlock(&(info->fork[philo->r_fork]));
 		}
@@ -86,7 +85,6 @@ void	*philo_engine(void *ptr)
 			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
 			ft_usleep(info->eating_time);
-			// usleep(info->eating_time * 1000);
 			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
 			pthread_mutex_unlock(&(info->fork[philo->r_fork]));			
 		}
@@ -95,10 +93,8 @@ void	*philo_engine(void *ptr)
 		if (!info->die)
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is sleeping");
 		ft_usleep(info->sleeping_time);
-		// usleep(info->sleeping_time * 1000);
 		if (!info->die)
 			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
-		// usleep(15000);
 	}
 	return (NULL);
 }
