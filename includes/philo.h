@@ -33,7 +33,7 @@ typedef struct s_info {
 	pthread_mutex_t	*fork;
 	pthread_mutex_t message;
 	pthread_mutex_t block_ptime;
-	pthread_mutex_t protect_die;
+	pthread_mutex_t block_die;
 }				t_info;
 
 void	ft_debug(t_info *info);

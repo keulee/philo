@@ -14,4 +14,5 @@ void	free_thread(t_info *info)
 	pthread_mutex_destroy(&(info->message));
 	pthread_mutex_destroy(&(info->block_ptime));
 	pthread_mutex_destroy(&(info->philo->block_letime));
+	pthread_mutex_destroy(&(info->block_die));
 }

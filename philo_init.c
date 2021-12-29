@@ -121,7 +121,7 @@ int	mutex_init(t_info *info)
 		printf("Error: Message mutex init fail\n");
 		return (0);
 	}
-	if (pthread_mutex_init(&(info->protect_die), NULL))
+	if (pthread_mutex_init(&(info->block_die), NULL))
 	{
 		printf("Error: Message mutex init fail\n");
 		return (0);
