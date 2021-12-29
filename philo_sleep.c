@@ -1,10 +1,12 @@
 #include "includes/philo.h"
 
-void	ft_usleep(long long time)
+void	ft_usleep(long long time, t_info *info)
 {
-	long long	time_cmp;
+	long long	time_gap;
 
-	time_cmp = get_time();
-	while ((get_time() - time_cmp) < time)
-		usleep(time / 10);
+	pthread_mutex_lock(&(info->block_ptime));
+	time_gap = get_time();
+	pthread_mutex_unlock(&(info->block_ptime));
+	while ((get_time() - time_gap) < time)
+		usleep(100);
 }

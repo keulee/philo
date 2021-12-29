@@ -57,8 +57,11 @@ void	*philo_engine(void *arg_ptr);
 
 void	*philo_test(void *ptr);
 
-void	ft_usleep(long long time);
+// void	ft_usleep(long long time);
+void	ft_usleep(long long time, t_info *info);
 
 void	monitor_thread(t_info *info);
+
+void	philo_message(t_info *info, int index, char *message);
 
 #endif
