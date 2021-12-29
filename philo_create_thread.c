@@ -33,7 +33,7 @@ void	*philo_engine(void *ptr)
 		usleep(15000);
 	}
 	// }
-	pthread_mutex_lock(&(info->block_die));
+	// pthread_mutex_lock(&(info->block_die));
 	while (!info->die)
 	{
 		if (info->num_philo % 2 == 0) //number of philo is even 철학자 수가 짝수이면
@@ -45,6 +45,10 @@ void	*philo_engine(void *ptr)
 			philo_message(info, philo->index, "has taken a fork");
 			if (philo->l_fork == philo->r_fork) //잡은 포크가 같은 포크라면 => 함수 탈출
 			{
+				// if (philo->index % 2 == 0)
+				// 	pthread_mutex_unlock(&(info->fork[philo->l_fork]));
+				// else
+				// 	pthread_mutex_unlock(&(info->fork[philo->r_fork]));
 				ft_usleep(info->living_time * 2, info);
 				return (NULL);
 			}
@@ -53,13 +57,13 @@ void	*philo_engine(void *ptr)
 			else //이후 짝수번째 철학자가 왼쪽 포크를 마저 잡음
 				pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			philo_message(info, philo->index, "has taken a fork"); //철학자가 두 포크를 다 잡은 상태
-			// pthread_mutex_lock(&(info->barricade));
 			philo_message(info, philo->index, "is eating"); //철학자 식사
 			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time(); //마지막 식사타임 체크
 			pthread_mutex_unlock(&(philo->block_letime));
-			// pthread_mutex_unlock(&(info->barricade));
+			pthread_mutex_lock(&info->block_eat);
 			philo->eat_count++; //식사 횟수 체크
+			pthread_mutex_unlock(&info->block_eat);
 			ft_usleep(info->eating_time, info); //식사 시간만큼 딜레이
 			pthread_mutex_unlock(&(info->fork[philo->l_fork])); //포크 뮤텍스 언락
 			pthread_mutex_unlock(&(info->fork[philo->r_fork])); //포크 뮤텍스 언락
@@ -71,27 +75,34 @@ void	*philo_engine(void *ptr)
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			if (philo->l_fork == philo->r_fork)
 			{
+				// pthread_mutex_unlock(&(info->fork[philo->l_fork]));
+				// pthread_mutex_unlock(&(info->fork[philo->r_fork]));
 				ft_usleep(info->living_time * 2, info);
 				return (NULL);
 			}
 			philo_message(info, philo->index, "has taken a fork");
-			// pthread_mutex_lock(&(info->barricade));
 			philo_message(info, philo->index, "is eating");
 			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time();
 			pthread_mutex_unlock(&(philo->block_letime));
-			// pthread_mutex_unlock(&(info->barricade));
+			// pthread_mutex_lock(&info->block_eatcount);
 			philo->eat_count++;
+			// pthread_mutex_unlock(&info->block_eatcount);
 			ft_usleep(info->eating_time, info);
 			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
 			pthread_mutex_unlock(&(info->fork[philo->r_fork]));			
 		}
+		// pthread_mutex_lock(&(info->block_eat));
 		if (info->eat)
+		{
+			// pthread_mutex_unlock(&(info->block_eat));
 			break ;
+		}
+		// pthread_mutex_unlock(&(info->block_eat));
 		philo_message(info, philo->index, "is sleeping");
 		ft_usleep(info->sleeping_time, info);
 		philo_message(info, philo->index, "is thinking");
 	}
-	pthread_mutex_unlock(&(info->block_die));
+	// pthread_mutex_unlock(&(info->block_die));
 	return (NULL);
 }

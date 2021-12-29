@@ -126,5 +126,15 @@ int	mutex_init(t_info *info)
 		printf("Error: Message mutex init fail\n");
 		return (0);
 	}
+	if (pthread_mutex_init(&(info->block_eat), NULL))
+	{
+		printf("Error: Message mutex init fail\n");
+		return (0);
+	}
+	if (pthread_mutex_init(&(info->block_eatcount), NULL))
+	{
+		printf("Error: Message mutex init fail\n");
+		return (0);
+	}
 	return (1);
 }

@@ -34,6 +34,8 @@ typedef struct s_info {
 	pthread_mutex_t message;
 	pthread_mutex_t block_ptime;
 	pthread_mutex_t block_die;
+	pthread_mutex_t	block_eat;
+	pthread_mutex_t	block_eatcount;
 }				t_info;
 
 void	ft_debug(t_info *info);
