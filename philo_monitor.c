@@ -20,9 +20,10 @@ void	monitor_thread(t_info *info)
 		{
 			if (get_time() - info->philo[i].last_eat_time > info->living_time)
 			{
-				pthread_mutex_lock(&(info->message));
-				printf("%lld %d %s\n", get_time() - info->s_time, info->philo[i].index + 1, "died");
-				pthread_mutex_unlock(&(info->message));
+				philo_message(info, info->philo[i].index, "died");
+				// pthread_mutex_lock(&(info->message));
+				// printf("%lld %d %s\n", get_time() - info->s_time, info->philo[i].index + 1, "died");
+				// pthread_mutex_unlock(&(info->message));
 				info->die = 1;
 			}
 			i++;

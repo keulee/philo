@@ -28,7 +28,7 @@ void	*philo_engine(void *ptr)
 	if (philo->index % 2 == 1) // when the index of philo is odd (1, 3, ... 2n - 1)
 	// thinking first, let the even number philo eat first
 	{
-		philo_message(info, philo, "is thinking");
+		philo_message(info, philo->index, "is thinking");
 		// pthread_mutex_lock(&(info->message));
 		// if (!info->die)
 		// 	printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
@@ -45,8 +45,9 @@ void	*philo_engine(void *ptr)
 				pthread_mutex_lock(&(info->fork[philo->l_fork]));
 			else
 				pthread_mutex_lock(&(info->fork[philo->r_fork]));
-			if (!info->die)
-				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			// if (!info->die)
+			philo_message(info, philo->index, "has taken a fork");
+				// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			if (philo->l_fork == philo->r_fork)
 			{
 				ft_usleep(info->living_time * 2, info);
@@ -56,13 +57,15 @@ void	*philo_engine(void *ptr)
 				pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			else
 				pthread_mutex_lock(&(info->fork[philo->l_fork]));
-			if (!info->die)
-				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			// if (!info->die)
+			philo_message(info, philo->index, "has taken a fork");
+				// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			// pthread_mutex_lock(&(info->message));
+			// if (!info->die)
+			philo_message(info, philo->index, "is eating");
+				// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			// pthread_mutex_unlock(&(info->message));
 			pthread_mutex_lock(&(philo->block_letime));
-			pthread_mutex_lock(&(info->message));
-			if (!info->die)
-				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-			pthread_mutex_unlock(&(info->message));
 			philo->last_eat_time = get_time();
 			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
@@ -73,21 +76,24 @@ void	*philo_engine(void *ptr)
 		else //number of philo is odd
 		{
 			pthread_mutex_lock(&(info->fork[philo->l_fork]));
-			if (!info->die)
-				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			// if (!info->die)
+			philo_message(info, philo->index, "has taken a fork");
+				// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
 			pthread_mutex_lock(&(info->fork[philo->r_fork]));
 			if (philo->l_fork == philo->r_fork)
 			{
 				ft_usleep(info->living_time * 2, info);
 				return (NULL);
 			}
-			if (!info->die)
-				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			// if (!info->die)
+			philo_message(info, philo->index, "has taken a fork");
+				// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "has taken a fork");
+			// pthread_mutex_lock(&(info->message));
+			// if (!info->die)
+			philo_message(info, philo->index, "is eating");
+				// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
+			// pthread_mutex_unlock(&(info->message));
 			pthread_mutex_lock(&(philo->block_letime));
-			pthread_mutex_lock(&(info->message));
-			if (!info->die)
-				printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is eating");
-			pthread_mutex_unlock(&(info->message));
 			philo->last_eat_time = get_time();
 			pthread_mutex_unlock(&(philo->block_letime));
 			philo->eat_count++;
@@ -97,15 +103,17 @@ void	*philo_engine(void *ptr)
 		}
 		if (info->eat == 1)
 			break ;
-		pthread_mutex_lock(&(info->message));
-		if (!info->die)
-			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is sleeping");
-		pthread_mutex_unlock(&(info->message));
+		// pthread_mutex_lock(&(info->message));
+		// if (!info->die)
+		philo_message(info, philo->index, "is sleeping");
+			// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is sleeping");
+		// pthread_mutex_unlock(&(info->message));
 		ft_usleep(info->sleeping_time, info);
-		pthread_mutex_lock(&(info->message));
-		if (!info->die)
-			printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
-		pthread_mutex_unlock(&(info->message));
+		philo_message(info, philo->index, "is thinking");
+		// pthread_mutex_lock(&(info->message));
+		// if (!info->die)
+			// printf("%lld %d %s\n", get_time() - info->s_time, philo->index + 1, "is thinking");
+		// pthread_mutex_unlock(&(info->message));
 	}
 	return (NULL);
 }
