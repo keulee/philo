@@ -8,5 +8,10 @@ void	ft_usleep(long long time, t_info *info)
 	time_gap = get_time();
 	pthread_mutex_unlock(&(info->block_ptime));
 	while ((get_time() - time_gap) < time)
-		usleep(100);
+	{
+		if (info->num_philo < 50)
+			usleep(100);
+		else
+			usleep(1000);
+	}
 }
