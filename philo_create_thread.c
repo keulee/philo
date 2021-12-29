@@ -61,9 +61,9 @@ void	*philo_engine(void *ptr)
 			pthread_mutex_lock(&(philo->block_letime));
 			philo->last_eat_time = get_time(); //마지막 식사타임 체크
 			pthread_mutex_unlock(&(philo->block_letime));
-			pthread_mutex_lock(&info->block_eat);
+			// pthread_mutex_lock(&info->block_eat);
 			philo->eat_count++; //식사 횟수 체크
-			pthread_mutex_unlock(&info->block_eat);
+			// pthread_mutex_unlock(&info->block_eat);
 			ft_usleep(info->eating_time, info); //식사 시간만큼 딜레이
 			pthread_mutex_unlock(&(info->fork[philo->l_fork])); //포크 뮤텍스 언락
 			pthread_mutex_unlock(&(info->fork[philo->r_fork])); //포크 뮤텍스 언락
