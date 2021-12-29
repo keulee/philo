@@ -8,7 +8,8 @@ SRCS = philo.c \
 		philo_create_thread.c \
 		philo_sleep.c \
 		philo_monitor.c \
-		philo_msg.c \
+		philo_message.c \
+		philo_free_thread.c \
 		philo_debug.c
 
 HEADER = ./includes/philo.h

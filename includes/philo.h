@@ -64,4 +64,6 @@ void	monitor_thread(t_info *info);
 
 void	philo_message(t_info *info, int index, char *message);
 
+void	free_thread(t_info *info);
+
 #endif
