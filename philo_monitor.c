@@ -6,7 +6,6 @@ void	monitor_thread(t_info *info)
 	int eat_c;
 
 	i = 0;
-	eat_c = 0;
 	while (i < info->num_philo)
 	{
 		pthread_mutex_lock(&(info->philo[i].block_letime));
@@ -16,6 +15,7 @@ void	monitor_thread(t_info *info)
 	}
 	while (!(info->eat))
 	{
+		eat_c = 0;
 		while (i < info->num_philo && !(info->die))
 		{
 			pthread_mutex_lock(&(info->philo[i].block_letime));
@@ -33,7 +33,7 @@ void	monitor_thread(t_info *info)
 		if (info->die == 1)
 			break ;
 		i = 0;
-		while (i < info->num_philo && info->max_eatcount)
+		while (i < info->num_philo && info->max_eatcount != 0)
 		{
 			// pthread_mutex_lock(&info->block_eatcount);
 			if (info->philo[i].eat_count >= info->max_eatcount)
