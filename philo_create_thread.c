@@ -107,21 +107,21 @@ int	create_pthread_philo(t_info *info)
 // 	return (NULL);
 // }
 
-int		philo_eat_first(t_info *info, int loop_index)
+int		philo_eat_first(t_philo *philo, int loop_index)
 {
 	int i;
 
 	i = 0;
-	if (info->num_philo % 2 == 0)
+	if (philo->info->num_philo % 2 == 0)
 	{
-		if (info->philo->index % 2 == 1)
-			return (0);
+		// if (philo->index % 2 == 1)
+			// return (0);
 		return (1);
 	}
-	loop_index = loop_index % info->num_philo;
-	while (i < info->num_philo)
+	loop_index = loop_index % philo->info->num_philo;
+	while (i < philo->info->num_philo)
 	{
-		if (info->philo->index == (loop_index + i * 2) % info->num_philo)
+		if (philo->index == (loop_index + i * 2) % philo->info->num_philo)
 			return (1);
 		i++;
 	}
@@ -132,19 +132,47 @@ void	*philo_engine(void *ptr)
 {
 	t_philo *philo;
 	t_info *info;
+	int i;
 
 	philo = ptr;
 	info = philo->info;
-	// if (info->num_philo % 2 == 0) //철학자가 짝수명일때
-	// {
-	// 	if (philo->index % 2) //홀수번째 철학자일때
-	// 	{
-	// 		//thinking 먼저하기
-	// 	}
-	// }
+	i = 0;
+	if (info->num_philo % 2 == 0) //철학자가 짝수명일때
+	{
+		if (philo->index % 2) //홀수번째 철학자일때
+		{
+			//thinking 먼저하기
+			philo_message(info, philo->index, "is thinking");
+			ft_usleep(info->eating_time / 1.333, info);
+		}
+	}
 	while (!info->die) //die flag가 0일때. (die flag가 없을때)
 	{
-
+		if (!philo_eat_first(philo, i))
+		{
+			philo_message(info, philo->index, "is thinking");
+			ft_usleep(info->eating_time, info);
+		}
+		else
+		{
+			pthread_mutex_lock(&(info->fork[philo->l_fork]));
+			philo_message(info, philo->index, "has taken a fork");
+			pthread_mutex_lock(&(info->fork[philo->r_fork]));
+			philo_message(info, philo->index, "has taken a fork");
+			philo_message(info, philo->index, "is eating");
+			philo->last_eat_time = get_time();
+			philo->eat_count++;
+			ft_usleep(info->eating_time, info);
+			pthread_mutex_unlock(&(info->fork[philo->l_fork]));
+			pthread_mutex_unlock(&(info->fork[philo->r_fork]));
+			philo_message(info, philo->index, "is sleeping");
+			ft_usleep(info->sleeping_time, info);
+			philo_message(info, philo->index, "is thinking");
+			i++;
+		}
+		if (info->eat)
+			return (NULL);
+		i++;
 	}
 	return (NULL);
 }
