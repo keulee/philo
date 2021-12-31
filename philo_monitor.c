@@ -32,9 +32,7 @@ void	philo_eat_monitor(t_info *info, int *eat_count)
 	{
 		pthread_mutex_lock(&info->block_eatcount);
 		if (info->philo[i].eat_count >= info->max_eatcount)
-		{
 			(*eat_count)++;
-		}
 		pthread_mutex_unlock(&info->block_eatcount);
 		i++;
 	}

@@ -7,16 +7,16 @@ void	*philo_engine(void *ptr)
 
 	philo = (t_philo *)ptr;
 	info = philo->info;
-	if (info->num_philo % 2 == 0) //철학자가 짝수명일때
-	{
-		if (philo->index % 2) //홀수번째 철학자일때
+	// if (info->num_philo % 2 == 0) //철학자가 짝수명일때
+	// {
+		if (philo->index % 2) //짝수번째 철학자일때
 		{
 			//thinking 먼저하기
 			philo_message(info, philo->index, "is thinking");
-			ft_usleep(info->eating_time / 1.333, info);
+			ft_usleep(info->eating_time / 1.333, philo);
 			// usleep(15000);
 		}
-	}
+	// }
 	pthread_mutex_lock(&info->block_die);
 	philo_loop(info, philo);
 	pthread_mutex_unlock(&info->block_die);
@@ -71,7 +71,7 @@ int	philo_eat_first(t_philo *philo, int loop_index)
 void	philo_think_first(t_info *info, t_philo *philo)
 {
 	philo_message(info, philo->index, "is thinking");
-	ft_usleep(info->eating_time, info);
+	ft_usleep(info->eating_time, philo);
 }
 
 void	philo_eat_sleep_think(t_philo *philo)
@@ -90,10 +90,10 @@ void	philo_eat_sleep_think(t_philo *philo)
 	pthread_mutex_lock(&(info->block_eatcount));
 	philo->eat_count++;
 	pthread_mutex_unlock(&(info->block_eatcount));
-	ft_usleep(info->eating_time, info);
+	ft_usleep(info->eating_time, philo);
 	pthread_mutex_unlock(&(info->fork[philo->l_fork]));
 	pthread_mutex_unlock(&(info->fork[philo->r_fork]));
 	philo_message(info, philo->index, "is sleeping");
-	ft_usleep(info->sleeping_time, info);
+	ft_usleep(info->sleeping_time, philo);
 	philo_message(info, philo->index, "is thinking");
 }

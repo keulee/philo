@@ -64,7 +64,7 @@ void	philo_eat_sleep_think(t_philo *philo);
 // void	*philo_test(void *ptr);
 
 // void	ft_usleep(long long time);
-void	ft_usleep(long long time, t_info *info);
+void	ft_usleep(long long time, t_philo *philo);
 
 void	monitor_thread(t_info *info);
 

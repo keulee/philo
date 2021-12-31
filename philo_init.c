@@ -65,13 +65,13 @@ int	philo_init(t_info *info)
 {
 	int	i;
 
-	i = 0;
 	info->philo = (t_philo *)malloc(sizeof(t_philo) * info->num_philo);
 	if (!info->philo)
 	{
 		printf("Error: Malloc fail - t_philo struct\n");
 		return (0);
 	}
+	i = 0;
 	while (i < info->num_philo)
 	{
 		info->philo[i].index = i;
