@@ -10,7 +10,7 @@ SRCS = philo.c \
 		philo_monitor.c \
 		philo_message.c \
 		philo_free_thread.c \
-		philo_debug.c
+		philo_engine.c 
 
 HEADER = ./includes/philo.h
 

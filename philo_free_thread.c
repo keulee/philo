@@ -2,13 +2,14 @@
 
 void	free_thread(t_info *info)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < info->num_philo)
 	{
 		pthread_join(info->philo[i].id, NULL);
 		pthread_mutex_destroy(&(info->fork[i]));
+		pthread_mutex_destroy(&(info->philo[i].block_letime));
 		i++;
 	}
 	pthread_mutex_destroy(&(info->message));

@@ -44,7 +44,7 @@ int		argument_check(char *str);
 int		ft_only_digit(char *str);
 int		ft_digit(char c);
 
-int		ft_parse_init(int ac, char **av, t_info *info);
+int		parse_init(int ac, char **av, t_info *info);
 int		parse_arg(int ac, char **av, int *i, t_info *info);
 int		philo_init(t_info *info);
 int		mutex_init(t_info *info);
@@ -55,9 +55,13 @@ long long	get_time(void);
 
 int		create_pthread_philo(t_info *info);
 
-void	*philo_engine(void *arg_ptr);
+void	*philo_engine(void *ptr);
+void	*philo_loop(t_info *info, t_philo *philo);
+int		philo_eat_first(t_philo *philo, int loop_index);
+void	philo_think_first(t_info *info, t_philo *philo);
+void	philo_eat_sleep_think(t_philo *philo);
 
-void	*philo_test(void *ptr);
+// void	*philo_test(void *ptr);
 
 // void	ft_usleep(long long time);
 void	ft_usleep(long long time, t_info *info);

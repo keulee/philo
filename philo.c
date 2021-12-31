@@ -4,7 +4,7 @@ int	main(int ac, char **av)
 {
 	t_info	info;
 
-	if (!ft_parse_init(ac, av, &info))
+	if (!parse_init(ac, av, &info))
 		return (1);
 	if (info.num_philo == 1)
 		return (one_philo(&info));
@@ -18,7 +18,9 @@ int	main(int ac, char **av)
 	free_thread(&info);
 	if (!info.die)
 		printf("all philo miam miam\n");
-
-	// ft_debug(&info);
+	if (info.philo)
+		free(info.philo);
+	if (info.fork)
+		free(info.fork);
 	return (0);
 }
