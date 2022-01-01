@@ -1,5 +1,29 @@
 #include "includes/philo.h"
 
+int	parse_arg(int ac, char **av, int *i, t_info *info)
+{
+	if (*i == 1)
+	{
+		info->num_philo = argument_check(av[*i]);
+		if (info->num_philo > 200)
+		{
+			printf("Error: Number of philosopher must be up to 200\n");
+			return (0);
+		}
+	}
+	else if (*i == 2)
+		info->living_time = argument_check(av[*i]);
+	else if (*i == 3)
+		info->eating_time = argument_check(av[*i]);
+	else if (*i == 4)
+		info->sleeping_time = argument_check(av[*i]);
+	if (ac == 6)
+		info->max_eatcount = argument_check(av[*i]);
+	else
+		info->max_eatcount = 0;
+	return (1);
+}
+
 int	argument_check(char *str)
 {
 	int			i;
@@ -49,4 +73,10 @@ int	ft_digit(char c)
 		return (1);
 	else
 		return (0);
+}
+
+int	rtn_err_msg(char *str)
+{
+	printf("%s\n", str);
+	return (0);
 }

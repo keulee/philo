@@ -6,7 +6,6 @@ SRCS = philo.c \
 		philo_one.c \
 		philo_time.c \
 		philo_create_thread.c \
-		philo_sleep.c \
 		philo_monitor.c \
 		philo_message.c \
 		philo_free_thread.c \
@@ -16,8 +15,8 @@ HEADER = ./includes/philo.h
 
 OBJS = $(SRCS:.c=.o)
 
-# CC = clang
-# CC = clang -g3 -fsanitize=address
+#CC = clang
+#CC = clang -g3 -fsanitize=address
  CC = clang -g3 -fsanitize=thread
 
 CFLAGS = -Wall -Wextra -Werror -pthread 

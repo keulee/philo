@@ -1,5 +1,30 @@
 #include "includes/philo.h"
 
+void	monitor_thread(t_info *info)
+{
+	int	i;
+	int	eat_c;
+
+	i = 0;
+	while (i < info->num_philo)
+	{
+		pthread_mutex_lock(&(info->philo[i].block_letime));
+		info->philo[i].last_eat_time = get_time();
+		pthread_mutex_unlock(&(info->philo[i].block_letime));
+		i++;
+	}
+	while (!(info->eat))
+	{
+		eat_c = 0;
+		pthread_mutex_lock(&(info->block_die));
+		philo_die_monitor(info);
+		pthread_mutex_unlock(&(info->block_die));
+		if (info->die == 1)
+			break ;
+		philo_eat_monitor(info, &eat_c);
+	}
+}
+
 void	philo_die_monitor(t_info *info)
 {
 	int	i;
@@ -40,29 +65,4 @@ void	philo_eat_monitor(t_info *info, int *eat_count)
 	if (*eat_count == info->num_philo)
 		info->eat = 1;
 	pthread_mutex_unlock(&(info->block_eat));
-}
-
-void	monitor_thread(t_info *info)
-{
-	int	i;
-	int	eat_c;
-
-	i = 0;
-	while (i < info->num_philo)
-	{
-		pthread_mutex_lock(&(info->philo[i].block_letime));
-		info->philo[i].last_eat_time = get_time();
-		pthread_mutex_unlock(&(info->philo[i].block_letime));
-		i++;
-	}
-	while (!(info->eat))
-	{
-		eat_c = 0;
-		pthread_mutex_lock(&(info->block_die));
-		philo_die_monitor(info);
-		pthread_mutex_unlock(&(info->block_die));
-		if (info->die == 1)
-			break ;
-		philo_eat_monitor(info, &eat_c);
-	}
 }
